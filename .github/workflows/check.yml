@@ -29,6 +29,15 @@ jobs:
         run: |
           rustup update stable --no-self-update
           rustup target add wasm32-unknown-unknown
+     
+      - name: Install Nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: ${{ env.NIGHTLY }}
+          override: true
+          target: wasm32-unknown-unknown
+          components: rustfmt, clippy
 
       # Rust cache
       - uses: Swatinem/rust-cache@v2
