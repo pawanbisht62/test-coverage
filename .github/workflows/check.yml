@@ -16,6 +16,8 @@ jobs:
   check:
     # The type of runner that the job will run on
     runs-on: ubuntu-22.04
+    env:
+      NIGHTLY: nightly-2023-02-01 # Fix version to prevent cache misses with nightly changes
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
