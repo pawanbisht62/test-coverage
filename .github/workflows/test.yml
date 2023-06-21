@@ -37,8 +37,23 @@ jobs:
           toolchain: ${{ env.NIGHTLY }}
           override: true
           target: wasm32-unknown-unknown
-
+      
+      - name: Install grcov
+        run: | 
+          cargo install grcov
+          rustup component add llvm-tools-preview
+          
       - name: test
         run: | 
-          RUSTFLAGS="-C instrument-coverage" cargo test --tests                                        
-
+          RUSTFLAGS="-C instrument-coverage" cargo test --tests    
+          
+      - name: test coverage
+        run: | 
+           grcov . --binary-path ./target/debug/deps/ -s . -t html --branch --ignore-not-existing --keep-only "pallets/template/src/lib.rs" -o target/coverage/html 
+      
+      - name: check coverage
+        run: | 
+           report =`cat target/coverage/html/html/coverage.json`
+           if report.message < 90%
+            exit 1
+           fi 
