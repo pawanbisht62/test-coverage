@@ -9,3 +9,8 @@
 # direnv files
 .envrc
 .direnv
+
+.idea/
+
+*.profraw
+
