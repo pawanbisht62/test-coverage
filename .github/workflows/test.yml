@@ -25,31 +25,18 @@ jobs:
         run: sudo apt update && sudo apt install -y git clang curl libssl-dev llvm libudev-dev cmake protobuf-compiler
 
       - name: Install Rust
-        uses: actions-rs/toolchain@v1
+        uses: actions/toolchain@v1
         with:
           profile: minimal
           toolchain: stable
 
       - name: Install Nightly
-        uses: actions-rs/toolchain@v1
+        uses: actions/toolchain@v1
         with:
           profile: minimal
           toolchain: ${{ env.NIGHTLY }}
           override: true
           target: wasm32-unknown-unknown
-
-      - name: Cache Build artefacts
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-            runtime-api/target/
-          key: ${{ runner.os }}-cargo-test-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: ${{ runner.os }}-cargo-test
 
       - name: test
         run: | 
