@@ -43,17 +43,9 @@ jobs:
           cargo install grcov
           rustup component add llvm-tools-preview
 
-      - name: Cache Build artefacts
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-cargo-test-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: ${{ runner.os }}-cargo-test
+      # Rust cache
+      - uses: Swatinem/rust-cache@v2
+
       - name: test
         run: |
           SKIP_WASM_BUILD=1 RUSTFLAGS="-C instrument-coverage" cargo test --tests
