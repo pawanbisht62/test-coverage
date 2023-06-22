@@ -42,7 +42,18 @@ jobs:
         run: | 
           cargo install grcov
           rustup component add llvm-tools-preview
-          
+      
+      - name: Cache Build artefacts
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-test-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-test
       - name: test
         run: | 
           RUSTFLAGS="-C instrument-coverage" cargo test --tests    
@@ -53,7 +64,7 @@ jobs:
       
       - name: check coverage
         run: | 
-           report =`cat target/coverage/html/html/coverage.json`
+           report =`cat ./target/coverage/html/html/coverage.json`
            if report.message < 90%
             exit 1
            fi 
