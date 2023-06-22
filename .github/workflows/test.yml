@@ -56,8 +56,6 @@ jobs:
 
       - name: check coverage
         run: |
-           echo 'PACKAGE_JSON<<EOF' >> $GITHUB_ENV
-           cat ./target/coverage/html/coverage.json >> $GITHUB_ENV
-           echo 'EOF' >> $GITHUB_ENV
-           echo '${{ fromJson(env.PACKAGE_JSON) }}'
+          echo "PACKAGE_JSON=$(jq -c . < target/coverage/html/coverage.json)" >> $GITHUB_ENV
+          echo '${{ fromJson(env.PACKAGE_JSON) }}'
 
