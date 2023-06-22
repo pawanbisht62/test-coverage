@@ -37,12 +37,12 @@ jobs:
           toolchain: ${{ env.NIGHTLY }}
           override: true
           target: wasm32-unknown-unknown
-      
+
       - name: Install grcov
-        run: | 
+        run: |
           cargo install grcov
           rustup component add llvm-tools-preview
-      
+
       - name: Cache Build artefacts
         uses: actions/cache@v3
         with:
@@ -55,16 +55,17 @@ jobs:
           key: ${{ runner.os }}-cargo-test-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo-test
       - name: test
-        run: | 
-          RUSTFLAGS="-C instrument-coverage" cargo test --tests    
-          
+        run: |
+          SKIP_WASM_BUILD=1 RUSTFLAGS="-C instrument-coverage" cargo test --tests
+
       - name: test coverage
-        run: | 
-           grcov . --binary-path ./target/debug/deps/ -s . -t html --branch --ignore-not-existing --keep-only "pallets/template/src/lib.rs" -o target/coverage/html 
-      
+        run: |
+           grcov . --binary-path ./target/debug/deps/ -s . -t html --branch --ignore-not-existing --keep-only "pallets/template/src/lib.rs" -o target/coverage/html
+
       - name: check coverage
-        run: | 
+        run: |
+           ls
            report = `cat target/coverage/html/html/coverage.json`
            if report.message < 90%
             exit 1
-           fi 
+           fi

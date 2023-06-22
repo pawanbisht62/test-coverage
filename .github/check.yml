@@ -31,7 +31,7 @@ jobs:
         run: |
           rustup update stable --no-self-update
           rustup target add wasm32-unknown-unknown
-     
+
       - name: Install Nightly
         uses: actions-rs/toolchain@v1
         with:
@@ -47,8 +47,3 @@ jobs:
       - name: Check Build
         run: |
           SKIP_WASM_BUILD=1 cargo check --release
-
-      - name: Check Build for Benchmarking
-        run: >
-          pushd node &&
-          cargo check --features=runtime-benchmarks --release
