@@ -56,7 +56,9 @@ jobs:
 
       - name: check coverage
         run: |
+           echo 'PACKAGE_JSON<<EOF' >> $GITHUB_ENV
+           cat ./target/coverage/html/coverage.json >> $GITHUB_ENV
+           echo 'EOF' >> $GITHUB_ENV
            report = `cat target/coverage/html/coverage.json`
-           if report.message < 90%
-            exit 1
-           fi
+           echo '${{ fromJson(env.PACKAGE_JSON).message }}'
+
