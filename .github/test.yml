@@ -64,7 +64,7 @@ jobs:
 
       - name: check coverage
         run: |
-           ls -la
+           ls
            report = `cat target/coverage/html/html/coverage.json`
            if report.message < 90%
             exit 1
