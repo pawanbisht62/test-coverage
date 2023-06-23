@@ -57,4 +57,4 @@ jobs:
       - name: check coverage
         run: |
           githubjson=`cat target/coverage/html/coverage.json`
-          echo $githubjson.message
+          echo githubjson.message
