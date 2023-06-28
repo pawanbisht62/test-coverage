@@ -58,3 +58,4 @@ jobs:
         run: |
           githubjson=`cat target/coverage/html/coverage.json`
           number=`echo $(jq -r '.number' <<< "$githubjson")`
+          echo $number
