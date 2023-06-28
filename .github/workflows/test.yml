@@ -57,5 +57,5 @@ jobs:
       - name: check coverage
         run: |
           githubjson=`cat target/coverage/html/coverage.json`
-          number=`echo $(jq -r '.number' <<< "$githubjson")`
+          number=`echo $(jq -r '.message' <<< "$githubjson")`
           echo $number
