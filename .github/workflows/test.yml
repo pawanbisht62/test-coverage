@@ -58,6 +58,10 @@ jobs:
         run: |
           githubjson=`cat target/coverage/html/coverage.json`
           number=`echo $(jq -r '.color' <<< "$githubjson")`
-
+          if $number == green;
+            then
+            echo "Test coverage must be greater than 80%"
+            exit 1
+          fi
 
           echo $number
