@@ -62,6 +62,6 @@ jobs:
           number=`echo $(jq -r '.message' <<< "$githubjson")`
 
           echo ${number//'/d'}
-          number="${number//'%'/'%25'}"
-          echo ${number//'/d'}
+          number="${number//'%'/}"
+          echo ${number}
 
