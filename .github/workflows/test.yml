@@ -64,8 +64,7 @@ jobs:
           if [ $number < ${{ env.Threshold }} ]; then
               echo "Low coverage"
               exit 1
-            fi
-
-          echo if $number -l ${{ env.Threshold }}
+          fi
+          echo `if $number -l ${{ env.Threshold }}`
           echo ${number}
 
