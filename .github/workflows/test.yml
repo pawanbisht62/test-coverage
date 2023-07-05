@@ -63,4 +63,5 @@ jobs:
             echo "Test coverage must be greater than 80%"
             exit 1
           fi
+
           echo $number
