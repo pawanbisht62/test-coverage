@@ -56,7 +56,7 @@ jobs:
 
       - name: check coverage
         env:
-          Threshold: 'red'
+          Threshold: 'green'
         run: |
           githubjson=`cat target/coverage/html/coverage.json`
           number=`echo $(jq -r '.color' <<< "$githubjson")`
@@ -66,4 +66,3 @@ jobs:
               exit 1
             fi
           echo $number
-          echo ${fromJSON(githubjson).message}
