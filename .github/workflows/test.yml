@@ -60,8 +60,8 @@ jobs:
         run: |
           githubjson=`cat target/coverage/html/coverage.json`
           number=`echo $(jq -r '.message' <<< "$githubjson")`
-          number="${number//'%'/}"
-          if [ $(echo “$number -gt 90.00” | bc) ]
+          number="${number//[$%’\t\r\n ‘]}"
+          if [ “$number" -gt 90.00 ]
           then
               echo "Low coverage"
               exit 1
