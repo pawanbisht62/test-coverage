@@ -59,7 +59,7 @@ jobs:
           json_data=`cat target/coverage/html/coverage.json`
           coverage=`echo $(jq -r '.message' <<< "json_data")`
           coverage="${coverage%%.*}"
-          if [ coverage -lt 80  ];
+          if [ $coverage -lt 80  ];
           then
               echo "Low coverage, current: ${coverage} %, expected: >=80 %"
               exit 1
