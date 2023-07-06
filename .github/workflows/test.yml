@@ -61,7 +61,7 @@ jobs:
           coverage="${coverage%%.*}"
           if [ coverage -lt 80  ];
           then
-              echo "Low coverage, current: $coverage %, expected: >=80 %"
+              echo "Low coverage, current: ${coverage} %, expected: >=80 %"
               exit 1
           fi
           echo ${number}
