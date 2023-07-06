@@ -58,10 +58,10 @@ jobs:
         env:
           Threshold: 90.00
         run: |
-          githubjson=`cat target/coverage/html/coverage.json`
-          number=`echo $(jq -r '.message' <<< "$githubjson")`
-          number="${number%%.*}"
-          if [ $number -lt 70  ];
+          json_data=`cat target/coverage/html/coverage.json`
+          coverage=`echo $(jq -r '.message' <<< "json_data")`
+          coverage="${coverage%%.*}"
+          if [ coverage -lt 80  ];
           then
               echo "Low coverage"
               exit 1
