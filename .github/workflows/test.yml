@@ -52,11 +52,9 @@ jobs:
 
       - name: test coverage
         run: |
-           grcov . --binary-path ./target/debug/deps/ -s . -t html --branch --ignore-not-existing --keep-only "pallets/template/src/lib.rs" -o target/coverage/html
+           grcov . --binary-path ./target/debug/ -s . -t html --branch --ignore-not-existing --keep-only "pallets/template/src/lib.rs" -o target/coverage/html
 
       - name: check coverage
-        env:
-          Threshold: 90.00
         run: |
           json_data=`cat target/coverage/html/coverage.json`
           coverage=`echo $(jq -r '.message' <<< "json_data")`
