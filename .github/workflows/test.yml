@@ -2,7 +2,7 @@ name: Run Tests
 
 # Controls when the action will run.
 on:
-  # Triggers the workflow on push or pull request events but only for the tellor branch
+  # Triggers the workflow on push or pull request events but only for the branch
   push:
     branches: [ main ]
   pull_request:
@@ -43,29 +43,26 @@ jobs:
           cargo install grcov
           rustup component add llvm-tools-preview
 
-      - name: Cache Build artefacts
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-cargo-test-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: ${{ runner.os }}-cargo-test
+      # Rust cache
+      - uses: Swatinem/rust-cache@v2
+
       - name: test
         run: |
           SKIP_WASM_BUILD=1 RUSTFLAGS="-C instrument-coverage" cargo test --tests
 
       - name: test coverage
         run: |
-           grcov . --binary-path ./target/debug/deps/ -s . -t html --branch --ignore-not-existing --keep-only "pallets/template/src/lib.rs" -o target/coverage/html
+           grcov . --binary-path ./target/debug/ -s . -t html --branch --ignore-not-existing --keep-only "pallets/template/src/lib.rs" -o target/coverage/html
 
       - name: check coverage
         run: |
-           ls -la
-           report = `cat target/coverage/html/html/coverage.json`
-           if report.message < 90%
-            exit 1
-           fi
+          json_data=`cat target/coverage/html/coverage.json`
+          coverage=`echo $(jq -r '.message' <<< "$json_data")`
+          coverage="${coverage%%.*}"
+          if [ $coverage -lt 80  ];
+          then
+              echo "Low coverage, current ${coverage} %, expected: >= 80 %"
+              exit 1
+          fi
+          echo ${coverage}
+
